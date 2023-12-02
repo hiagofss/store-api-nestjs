@@ -6,7 +6,7 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
-import { IUsersRespository } from '../repository/users-respository.interface';
+import { IUsersRespository } from '../repository/users.interface.respository';
 
 @Injectable()
 @ValidatorConstraint({ name: 'isUniqueEmail', async: true })
