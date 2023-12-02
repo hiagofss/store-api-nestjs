@@ -19,7 +19,7 @@ export class UsersTypeORMRepository {
   }
 
   async findUserById(id) {
-    return await this.usersRepository.findOne(id);
+    return await this.usersRepository.findOne({ where: { id } });
   }
 
   async findUserByEmail(email) {
@@ -27,9 +27,19 @@ export class UsersTypeORMRepository {
   }
 
   async update(id, user) {
-    await this.usersRepository.update(id, user);
-    return await this.usersRepository.findOne(id);
+    const categoryToUpdate = await this.usersRepository.findOne({
+      where: { id },
+    });
+
+    categoryToUpdate.name = user.name;
+    categoryToUpdate.email = user.email;
+    categoryToUpdate.password = user.password;
+
+    await this.usersRepository.save(categoryToUpdate);
+
+    return categoryToUpdate;
   }
+
   async delete(id) {
     await this.usersRepository.delete(id);
   }
