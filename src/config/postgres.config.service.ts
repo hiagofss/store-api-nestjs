@@ -10,7 +10,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
     return {
       type: this.configService.get('TYPEORM_TYPE'),
       url: this.configService.get<string>('TYPEORM_URL'),
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: true,
     };
   }
