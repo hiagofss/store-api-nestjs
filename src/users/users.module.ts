@@ -6,16 +6,17 @@ import { IUsersRespository } from './repository/users-respository.interface';
 import { IsUniqueEmailValidator } from './validator/is-unique-email.validator';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersTypeORMRepository } from './repository/users.typeorm.repository';
+import { UserEntity } from './entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersTypeORMRepository])],
+  imports: [TypeOrmModule.forFeature([UserEntity])],
   controllers: [UsersController],
   providers: [
     IsUniqueEmailValidator,
     UsersService,
     {
       provide: IUsersRespository,
-      useClass: UsersRepository,
+      useClass: UsersTypeORMRepository,
     },
   ],
 })
