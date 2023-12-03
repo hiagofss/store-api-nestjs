@@ -11,7 +11,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
       type: this.configService.get('TYPEORM_TYPE'),
       url: this.configService.get<string>('TYPEORM_URL'),
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-      synchronize: true,
+      synchronize: false,
     };
   }
 }
