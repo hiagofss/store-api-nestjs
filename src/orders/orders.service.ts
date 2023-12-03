@@ -5,6 +5,7 @@ import { IUsersRespository } from 'src/users/repository/users.interface.resposit
 import { IOrdersRespository } from './repository/orders.interface.respository';
 import { OrderEntity } from './entities/order.entity';
 import { OrderStatus } from './enum/OrderStatus.enum';
+import { OrderItemEntity } from './entities/order-item.entity';
 
 @Injectable()
 export class OrdersService {
@@ -24,7 +25,17 @@ export class OrdersService {
     const order = new OrderEntity();
     order.user = user;
     order.status = OrderStatus.PENDING;
-    order.amount = 12321;
+    let amount = 0;
+    const orderItemsEntitys = createOrderDto.orderItems.map((item) => {
+      const orderItemEntity = new OrderItemEntity();
+      orderItemEntity.quantity = item.quantity;
+      orderItemEntity.saleAmount = item.saleAmount;
+      amount += item.saleAmount * item.quantity;
+      return orderItemEntity;
+    });
+
+    order.itens = orderItemsEntitys;
+    order.amount = amount;
 
     const orderCreated = await this.ordersRepository.create(order);
 
