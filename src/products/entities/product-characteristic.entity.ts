@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductEntity } from './product.entity';
 
 @Entity('product_characteristics')
 export class ProductCharacteristicEntity {
@@ -8,6 +9,6 @@ export class ProductCharacteristicEntity {
   @Column({ name: 'name', length: 50, nullable: false })
   name: string;
 
-  @Column({ name: 'product_id' })
-  productId: string;
+  @ManyToOne(() => ProductEntity, (product) => product.id)
+  product: string;
 }

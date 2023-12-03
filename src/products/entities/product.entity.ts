@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ProductCharacteristicEntity } from './product-characteristic.entity';
+import { ProductImageEntity } from './product-image.entity';
 
 @Entity('products')
 export class ProductEntity {
@@ -18,14 +21,23 @@ export class ProductEntity {
   @Column({ name: 'description', length: 255 })
   description: string;
 
-  @Column({ name: 'price' })
+  @Column({ name: 'price', type: 'decimal' })
   price: number;
 
-  @Column({ name: 'price', type: 'decimal' })
+  @Column({ name: 'stock', type: 'integer' })
   stock: number;
 
   @Column({ length: 50 })
   category: string;
+
+  @OneToMany(
+    () => ProductCharacteristicEntity,
+    (characteristic) => characteristic.product,
+  )
+  characteristics: ProductCharacteristicEntity[];
+
+  @OneToMany(() => ProductImageEntity, (image) => image.product)
+  images: ProductImageEntity[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
