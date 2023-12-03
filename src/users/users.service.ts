@@ -18,7 +18,6 @@ export class UsersService {
     userEntity.name = name;
     userEntity.email = email;
     userEntity.password = password;
-    userEntity.id = crypto.randomUUID();
     const user = await this.usersRepository.create(userEntity);
 
     return new UserDto(user.id, user.name, user.email);
