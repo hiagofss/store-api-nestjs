@@ -46,3 +46,11 @@ app-up:
 .PHONY: dk-down ## down all services
 dk-down:
 	@docker compose down --remove-orphans -v
+
+.PHONY: migrate-run ## down all services
+migrate-run:
+	@npm run typeorm migration:run
+
+.PHONY: migrate-generate ## down all services
+migrate-generate:
+	@npm run typeorm migration:generate
