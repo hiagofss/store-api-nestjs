@@ -4,15 +4,16 @@ import {
   IsArray,
   IsDecimal,
   IsInt,
+  IsUUID,
   ValidateNested,
 } from 'class-validator';
 
 class ItemDto {
+  @IsUUID()
+  productId: string;
+
   @IsInt()
   quantity: number;
-
-  @IsDecimal()
-  saleAmount: number;
 }
 export class CreateOrderDto {
   @ValidateNested()

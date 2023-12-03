@@ -23,7 +23,7 @@ export class OrderEntity {
   @Column({ name: 'status', enum: OrderStatus, nullable: false })
   status: OrderStatus;
 
-  @ManyToOne(() => UserEntity, (user) => user.orders, {})
+  @ManyToOne(() => UserEntity, (user) => user.orders)
   user: UserEntity;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -35,6 +35,9 @@ export class OrderEntity {
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
 
-  @OneToMany(() => OrderItemEntity, (item) => item.order)
+  @OneToMany(() => OrderItemEntity, (item) => item.order, {
+    cascade: true,
+    eager: true,
+  })
   itens: OrderItemEntity[];
 }

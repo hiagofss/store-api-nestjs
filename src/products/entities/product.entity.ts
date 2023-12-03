@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { ProductCharacteristicEntity } from './product-characteristic.entity';
 import { ProductImageEntity } from './product-image.entity';
+import { OrderItemEntity } from '../../orders/entities/order-item.entity';
 
 @Entity('products')
 export class ProductEntity {
@@ -54,4 +55,7 @@ export class ProductEntity {
 
   @DeleteDateColumn({ name: 'deleted_at' })
   deletedAt: Date;
+
+  @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.product)
+  orderItems: OrderItemEntity[];
 }
