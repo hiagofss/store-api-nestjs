@@ -33,10 +33,17 @@ export class ProductEntity {
   @OneToMany(
     () => ProductCharacteristicEntity,
     (characteristic) => characteristic.product,
+    {
+      cascade: true,
+      eager: true,
+    },
   )
   characteristics: ProductCharacteristicEntity[];
 
-  @OneToMany(() => ProductImageEntity, (image) => image.product)
+  @OneToMany(() => ProductImageEntity, (image) => image.product, {
+    cascade: true,
+    eager: true,
+  })
   images: ProductImageEntity[];
 
   @CreateDateColumn({ name: 'created_at' })

@@ -9,6 +9,10 @@ export class ProductCharacteristicEntity {
   @Column({ name: 'name', length: 50, nullable: false })
   name: string;
 
-  @ManyToOne(() => ProductEntity, (product) => product.id)
-  product: string;
+  @ManyToOne(() => ProductEntity, (product) => product.id, {
+    orphanedRowAction: 'delete',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  product: ProductEntity;
 }

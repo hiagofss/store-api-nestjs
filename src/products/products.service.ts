@@ -18,6 +18,8 @@ export class ProductsService {
     product.price = createProductDto.price;
     product.stock = createProductDto.stock;
     product.category = createProductDto.category;
+    product.characteristics = createProductDto.characteristics;
+    product.images = createProductDto.images;
 
     const productCreated = await this.productsRepository.create(product);
 
