@@ -10,6 +10,7 @@ import { OrdersModule } from './orders/orders.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filter/http-exception-filter.filter';
 import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-yet';
 
 @Module({
   imports: [
@@ -23,7 +24,15 @@ import { CacheModule } from '@nestjs/cache-manager';
     UsersModule,
     ProductsModule,
     OrdersModule,
-    CacheModule.register({ isGlobal: true, ttl: 10000 }),
+    CacheModule.registerAsync({
+      useFactory: async () => ({
+        store: await redisStore({
+          ttl: 10 * 1000,
+          socket: { host: 'redis', port: 6379 },
+        }),
+      }),
+      isGlobal: true,
+    }),
   ],
   controllers: [AppController],
   providers: [
