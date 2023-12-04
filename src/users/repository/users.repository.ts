@@ -15,12 +15,22 @@ export class UsersRepository implements IUsersRespository {
     return this.users;
   }
 
-  async findUserById(id: string): Promise<UserEntity> {
-    return await this.users.find((user) => user.id === id);
+  async findUserById(id: string): Promise<UserEntity | null> {
+    const user = await this.users.find((user) => user.id === id);
+    if (user) {
+      return user;
+    }
+
+    return null;
   }
 
-  async findUserByEmail(email: string): Promise<UserEntity> {
-    return await this.users.find((user) => user.email === email);
+  async findUserByEmail(email: string): Promise<UserEntity | null> {
+    const user = await this.users.find((user) => user.email === email);
+    if (user) {
+      return user;
+    }
+
+    return null;
   }
 
   async update(id: string, user: UserEntity) {

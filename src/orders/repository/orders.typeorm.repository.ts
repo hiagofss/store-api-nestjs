@@ -24,13 +24,19 @@ export class OrdersTypeORMRepository implements IOrdersRespository {
   }
 
   async update(id, order) {
-    const categoryToUpdate = await this.ordersRepository.findOne({
+    const orderToUpdate = await this.ordersRepository.findOne({
       where: { id },
     });
 
-    await this.ordersRepository.save(categoryToUpdate);
+    if (!orderToUpdate) {
+      throw new Error('Order not found');
+    }
 
-    return categoryToUpdate;
+    Object.assign(orderToUpdate, order);
+
+    await this.ordersRepository.save(orderToUpdate);
+
+    return orderToUpdate;
   }
 
   async delete(id) {

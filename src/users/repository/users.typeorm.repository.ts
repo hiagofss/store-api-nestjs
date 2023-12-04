@@ -11,37 +11,39 @@ export class UsersTypeORMRepository implements IUsersRespository {
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
-  async create(user) {
+  async create(user): Promise<UserEntity> {
     return await this.usersRepository.save(user);
   }
 
-  async findAll() {
+  async findAll(): Promise<UserEntity[]> {
     return await this.usersRepository.find();
   }
 
-  async findUserById(id) {
+  async findUserById(id): Promise<UserEntity | null> {
     return await this.usersRepository.findOne({ where: { id } });
   }
 
-  async findUserByEmail(email) {
+  async findUserByEmail(email): Promise<UserEntity | null> {
     return await this.usersRepository.findOne({ where: { email } });
   }
 
-  async update(id, user) {
+  async update(id, user): Promise<UserEntity> {
     const categoryToUpdate = await this.usersRepository.findOne({
       where: { id },
     });
 
-    categoryToUpdate.name = user.name;
-    categoryToUpdate.email = user.email;
-    categoryToUpdate.password = user.password;
+    if (!categoryToUpdate) {
+      throw new Error('User not found');
+    }
+
+    Object.assign(categoryToUpdate, user);
 
     await this.usersRepository.save(categoryToUpdate);
 
     return categoryToUpdate;
   }
 
-  async delete(id) {
+  async delete(id): Promise<void> {
     await this.usersRepository.delete(id);
   }
 }

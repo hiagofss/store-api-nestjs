@@ -48,11 +48,7 @@ export class ProductsService {
       throw new Error('Product not found');
     }
 
-    product.name = updateProductDto.name;
-    product.description = updateProductDto.description;
-    product.price = updateProductDto.price;
-    product.stock = updateProductDto.stock;
-    product.category = updateProductDto.category;
+    Object.assign(product, updateProductDto);
 
     const productUpdated = await this.productsRepository.update(id, product);
 

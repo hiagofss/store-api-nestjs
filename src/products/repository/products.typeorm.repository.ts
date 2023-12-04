@@ -11,35 +11,35 @@ export class ProductsTypeORMRepository implements IProductsRespository {
     private readonly productsRepository: Repository<ProductEntity>,
   ) {}
 
-  async create(product) {
+  async create(product): Promise<ProductEntity> {
     return await this.productsRepository.save(product);
   }
 
-  async find() {
+  async find(): Promise<ProductEntity[]> {
     return await this.productsRepository.find();
   }
 
-  async findById(id) {
+  async findById(id): Promise<ProductEntity | null> {
     return await this.productsRepository.findOne({ where: { id } });
   }
 
-  async update(id, product) {
+  async update(id, product): Promise<ProductEntity> {
     const categoryToUpdate = await this.productsRepository.findOne({
       where: { id },
     });
 
-    categoryToUpdate.name = product.name;
-    categoryToUpdate.description = product.description;
-    categoryToUpdate.price = product.price;
-    categoryToUpdate.stock = product.quantity;
-    categoryToUpdate.category = product.category;
+    if (!categoryToUpdate) {
+      throw new Error('Product not found');
+    }
+
+    Object.assign(categoryToUpdate, product);
 
     await this.productsRepository.save(categoryToUpdate);
 
     return categoryToUpdate;
   }
 
-  async delete(id) {
+  async delete(id): Promise<void> {
     await this.productsRepository.delete(id);
   }
 }

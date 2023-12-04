@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';
@@ -35,6 +35,10 @@ export class UsersService {
   async findOne(id: string) {
     const user = await this.usersRepository.findUserById(id);
 
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
     return new UserDto(user.id, user.name, user.email);
   }
 
@@ -42,13 +46,10 @@ export class UsersService {
     const user = await this.usersRepository.findUserById(id);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
-    const { name, email, password } = updateUserDto;
-    user.name = name;
-    user.email = email;
-    user.password = password;
+    Object.assign(user, updateUserDto);
 
     await this.usersRepository.update(id, user);
 
@@ -59,7 +60,7 @@ export class UsersService {
     const user = await this.usersRepository.findUserById(id);
 
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
     await this.usersRepository.delete(id);
