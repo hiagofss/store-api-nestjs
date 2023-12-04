@@ -8,7 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostgresConfigService } from './config/postgres.config.service';
 import { OrdersModule } from './orders/orders.module';
 import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from './filter/http-exception-filter.filter';
+import { HttpExceptionFilter } from './resources/filter/http-exception-filter.filter';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 
