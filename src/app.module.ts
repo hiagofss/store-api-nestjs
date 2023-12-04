@@ -9,6 +9,7 @@ import { PostgresConfigService } from './config/postgres.config.service';
 import { OrdersModule } from './orders/orders.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filter/http-exception-filter.filter';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { HttpExceptionFilter } from './filter/http-exception-filter.filter';
     UsersModule,
     ProductsModule,
     OrdersModule,
+    CacheModule.register({ isGlobal: true, ttl: 10000 }),
   ],
   controllers: [AppController],
   providers: [
