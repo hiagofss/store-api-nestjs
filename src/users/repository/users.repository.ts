@@ -6,8 +6,8 @@ import { IUsersRespository } from './users.interface.respository';
 export class UsersRepository implements IUsersRespository {
   private users: UserEntity[] = [];
 
-  async create(user: UserEntity) {
-    this.users.push(user);
+  async create(user: UserEntity): Promise<UserEntity> {
+    await this.users.push(user);
     return user;
   }
 
@@ -33,13 +33,13 @@ export class UsersRepository implements IUsersRespository {
     return null;
   }
 
-  async update(id: string, user: UserEntity) {
+  async update(id: string, user: UserEntity): Promise<UserEntity | null> {
     const userIndex = this.users.findIndex((user) => user.id === id);
     this.users[userIndex] = user;
     return user;
   }
 
-  async delete(id: string) {
+  async delete(id: string): Promise<void> {
     this.users = this.users.filter((user) => user.id !== id);
   }
 }

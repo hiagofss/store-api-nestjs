@@ -1,12 +1,17 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { IUsersRespository } from 'src/users/repository/users.interface.respository';
+import { IUsersRespository } from '../users/repository/users.interface.respository';
 import { IOrdersRespository } from './repository/orders.interface.respository';
 import { OrderEntity } from './entities/order.entity';
 import { OrderStatus } from './enum/OrderStatus.enum';
 import { OrderItemEntity } from './entities/order-item.entity';
-import { IProductsRespository } from 'src/products/repository/products.interface.respository';
+import { IProductsRespository } from '../products/repository/products.interface.respository';
 
 @Injectable()
 export class OrdersService {
@@ -34,6 +39,14 @@ export class OrdersService {
       const productOrderItem = products.find(
         (product) => product.id === item.productId,
       );
+      if (!productOrderItem) {
+        throw new NotFoundException('Product not found');
+      }
+
+      if (productOrderItem.stock <= item.quantity) {
+        throw new BadRequestException('Product out of stock');
+      }
+
       const orderItemEntity = new OrderItemEntity();
       orderItemEntity.product = productOrderItem;
       orderItemEntity.quantity = item.quantity;
@@ -61,15 +74,29 @@ export class OrdersService {
     return orders;
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} order`;
+  async findOne(id: string) {
+    const order = await this.ordersRepository.findById(id);
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    return order;
   }
 
   update(id: string, updateOrderDto: UpdateOrderDto) {
     return `This action updates a #${id} order`;
   }
 
-  remove(id: string) {
+  async remove(id: string) {
+    const order = await this.ordersRepository.findById(id);
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    await this.ordersRepository.delete(id);
+
     return `This action removes a #${id} order`;
   }
 }
