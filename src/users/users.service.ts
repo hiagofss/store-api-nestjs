@@ -13,11 +13,9 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const { name, email, password } = createUserDto;
     const userEntity = new UserEntity();
-    userEntity.name = name;
-    userEntity.email = email;
-    userEntity.password = password;
+
+    Object.assign(userEntity, createUserDto as UserEntity);
     const user = await this.usersRepository.create(userEntity);
 
     return new UserDto(user.id, user.name, user.email);
@@ -49,7 +47,7 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
 
-    Object.assign(user, updateUserDto);
+    Object.assign(user, updateUserDto as UserEntity);
 
     await this.usersRepository.update(id, user);
 

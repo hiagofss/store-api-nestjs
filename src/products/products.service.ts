@@ -13,13 +13,8 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto) {
     const product = new ProductEntity();
-    product.name = createProductDto.name;
-    product.description = createProductDto.description;
-    product.price = createProductDto.price;
-    product.stock = createProductDto.stock;
-    product.category = createProductDto.category;
-    product.characteristics = createProductDto.characteristics;
-    product.images = createProductDto.images;
+
+    Object.assign(product, createProductDto as ProductEntity);
 
     const productCreated = await this.productsRepository.create(product);
 
@@ -48,7 +43,7 @@ export class ProductsService {
       throw new Error('Product not found');
     }
 
-    Object.assign(product, updateProductDto);
+    Object.assign(product, updateProductDto as ProductEntity);
 
     const productUpdated = await this.productsRepository.update(id, product);
 

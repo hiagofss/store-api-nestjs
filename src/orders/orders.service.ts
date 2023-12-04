@@ -84,7 +84,17 @@ export class OrdersService {
     return order;
   }
 
-  update(id: string, updateOrderDto: UpdateOrderDto) {
+  async update(id: string, updateOrderDto: UpdateOrderDto) {
+    const order = await this.ordersRepository.findById(id);
+
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+
+    Object.assign(order, updateOrderDto as OrderEntity);
+
+    await this.ordersRepository.update(id, order);
+
     return `This action updates a #${id} order`;
   }
 

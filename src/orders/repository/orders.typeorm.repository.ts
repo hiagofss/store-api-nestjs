@@ -23,7 +23,7 @@ export class OrdersTypeORMRepository implements IOrdersRespository {
     return await this.ordersRepository.findOne({ where: { id } });
   }
 
-  async update(id, order) {
+  async update(id: string, order: OrderEntity) {
     const orderToUpdate = await this.ordersRepository.findOne({
       where: { id },
     });
