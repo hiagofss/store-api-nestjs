@@ -33,7 +33,7 @@ import { GlobalLoggerInterceptor } from './resources/interceptors/global-logger/
     CacheModule.registerAsync({
       useFactory: async () => ({
         store: await redisStore({
-          ttl: 10 * 1000,
+          ttl: 60 * 1000,
           socket: { host: 'redis', port: 6379 },
         }),
       }),
