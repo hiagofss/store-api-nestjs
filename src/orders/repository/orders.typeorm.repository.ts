@@ -16,7 +16,9 @@ export class OrdersTypeORMRepository implements IOrdersRespository {
   }
 
   async find() {
-    return await this.ordersRepository.find();
+    return await this.ordersRepository.find({
+      relations: ['user'],
+    });
   }
 
   async findById(id) {
