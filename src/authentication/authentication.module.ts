@@ -6,14 +6,20 @@ import { UserEntity } from '../users/entities/user.entity';
 import { IUsersRespository } from '../users/repository/users.interface.respository';
 import { UsersTypeORMRepository } from '../users/repository/users.typeorm.repository';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    JwtModule.register({
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRATION_TIME'),
+        },
+      }),
+      inject: [ConfigService],
       global: true,
-      secret: 'secret',
-      signOptions: { expiresIn: '72h' },
     }),
   ],
   controllers: [AuthenticationController],
