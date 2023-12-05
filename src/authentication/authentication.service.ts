@@ -7,6 +7,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { IUsersRespository } from 'src/users/repository/users.interface.respository';
+
+export interface UserPayload {
+  sub: string;
+  name: string;
+}
+
 @Injectable()
 export class AuthenticationService {
   constructor(
@@ -26,7 +32,7 @@ export class AuthenticationService {
       throw new UnauthorizedException('Incorrect password');
     }
 
-    const payload = {
+    const payload: UserPayload = {
       sub: userExists.id,
       name: userExists.name,
     };
